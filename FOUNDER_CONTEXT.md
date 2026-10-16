@@ -1,39 +1,40 @@
 # Founder Context
 
-This file provides context about your business that all founder-skills will use. Customize it with your specific information.
-
 ## About Your Business
 
-- **Company name**: [Your company name]
-- **Industry**: [Your industry/niche]
-- **Target audience**: [Who you serve - be specific about demographics, pain points, goals]
-- **Value proposition**: [What makes you unique - your core differentiator]
+- **Company name**: A definir (nome provisório: "Ingresso Campus")
+- **Industry**: Venda de ingressos e inscrições online (ticketing) para eventos
+- **Target audience**: Organizadores de eventos universitários e acadêmicos no Nordeste do Brasil (atléticas, centros acadêmicos, comissões de congressos e semanas acadêmicas, empresas juniores) e o público universitário que compra os ingressos (18–30 anos, paga com Pix e cartão, usa muito WhatsApp e Instagram).
+- **Value proposition**: Taxa fixa e transparente paga pelo comprador, repasse rápido ao organizador, certificados e check-in incluídos, suporte humano por WhatsApp. Foco em eventos acadêmicos e universitários, em vez de plataforma genérica.
 
 ## Brand Voice
 
-- **Tone**: [Professional / Casual / Friendly / Authoritative / etc.]
-- **Personality traits**: [e.g., helpful, innovative, trustworthy]
-- **Key messages**: [Core themes you want to communicate]
-- **Words to use**: [Preferred terminology]
-- **Words to avoid**: [Terms that don't fit your brand]
+- **Tone**: Próximo, direto e confiável
+- **Personality traits**: transparente, ágil, parceiro do organizador
+- **Key messages**: "Sem taxa escondida", "Você recebe rápido", "Certificado e check-in já incluídos"
+- **Words to use**: transparente, repasse rápido, comissão organizadora, atlética, congresso
+- **Words to avoid**: taxa de conveniência (usar "taxa de serviço fixa"), jargão financeiro
 
 ## Business Goals
 
-- **Short-term (3-6 months)**: [Immediate priorities]
-- **Long-term (1-3 years)**: [Strategic vision]
-- **Key metrics**: [What you measure for success]
+- **Short-term (3-6 months)**: Validar com 5 organizadores, lançar o MVP e fazer as primeiras vendas reais de ingressos.
+- **Long-term (1-3 years)**: Ser a plataforma de referência de eventos universitários e acadêmicos do Nordeste, chegando a R$ 5 milhões de ingressos vendidos por ano (ponto de equilíbrio estimado).
+- **Key metrics**: GMV (valor total vendido), ingressos vendidos, organizadores ativos recorrentes, tempo de repasse, taxa de estorno.
 
 ## Products/Services
 
-- **Main offerings**: [What you sell or provide]
-- **Pricing model**: [How you charge]
-- **Key features/benefits**: [What customers get]
+- **Main offerings**: Plataforma web de criação de evento, venda de ingressos e inscrições, check-in por QR code, certificados e repasse ao organizador.
+- **Pricing model**: Taxa fixa por ingresso pago, paga pelo comprador, em faixas de preço. Planos mensais opcionais para organizadores recorrentes (ver `ticketing-plan/pricing-strategy.md`).
+- **Key features/benefits**: Checkout com Pix e cartão, QR code, app de check-in, certificados, cupons, lotes, relatórios financeiros em tempo real.
 
 ## Competitors
 
-- **Main competitors**: [Who you compete with]
-- **Your advantages**: [Why customers choose you]
+- **Main competitors**: Sympla, Even3, Ingresse, Ingresso.com, Eventbrite, Blueticket, Uhuu (ver `ticketing-plan/competitor-intel.md`).
+- **Your advantages**: Foco em nicho universitário e acadêmico, taxa fixa transparente, suporte por WhatsApp, repasse rápido.
 
 ## Additional Context
 
-[Any other relevant information for the AI to know when helping with founder tasks - team size, funding stage, tech stack, etc.]
+- Fundador(a) programa sozinho(a) com ajuda do Claude, sem equipe nem funding no momento.
+- Região: Nordeste, várias capitais (recomendação: começar por uma capital e replicar).
+- Pagamentos: usar gateway com split (Pagar.me, Mercado Pago, Asaas ou Stripe Connect) para não virar instituição financeira.
+- Stack sugerida: Next.js, Postgres e fila de e-mails.
