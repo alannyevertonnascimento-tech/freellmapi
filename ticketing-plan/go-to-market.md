@@ -38,7 +38,7 @@ Comissões de congressos sofrem com inscrição, certificados e conferência de 
 
 **The Exact Playbook:**
 - **Step 1:** Levantar 40 congressos e semanas acadêmicas dos próximos 6 meses nas universidades do Nordeste (sites de cursos, Instagram de coordenações, páginas de sociedades científicas) e anotar a comissão organizadora.
-- **Step 2:** Enviar e-mail e WhatsApp ao coordenador ou presidente da comissão: "Fazemos inscrição, Pix, check-in e certificado automático com taxa fixa de R$ X por inscrito. Posso cadastrar seu evento e mostrar um exemplo em 20 min?"
+- **Step 2:** Enviar e-mail e WhatsApp ao coordenador ou presidente da comissão: "Fazemos inscrição, Pix, check-in e certificado automático com taxa de 5% (no máximo R$ 2,50 por ingresso), metade da maioria das plataformas. Posso cadastrar seu evento e mostrar um exemplo em 20 min?"
 - **Step 3:** Preparar uma página de demonstração de congresso com certificado de exemplo e o simulador de taxa (quanto o evento recebe).
 - **Step 4:** Oferecer o plano Congresso de graça no primeiro evento em troca de um estudo de caso.
 

@@ -196,7 +196,7 @@ Ingresso Campus é uma plataforma de venda de ingressos e inscrições para even
 **Description:** planos Essencial, Pro e Congresso com taxas e recursos diferentes.
 **User story:** As an organizador recorrente, I want to subscribe so that I pay less per ticket.
 **Acceptance criteria:**
-- [ ] Taxa por ingresso calculada pela faixa de preço e pelo plano
+- [ ] Taxa por ingresso = min(5% do preço, R$ 2,50), igual em todos os planos (arredondada para centavos)
 - [ ] Assinatura mensal ou anual via Pagar.me ou Stripe
 **Priority:** P2
 **Dependencies:** FR-008
@@ -458,7 +458,7 @@ O navegador do comprador acessa a página do evento em Next.js. O checkout chama
 ## Testing Requirements
 
 #### Unit Tests
-- Cálculo de taxa por faixa e plano
+- Cálculo de taxa: min(5% do preço, R$ 2,50), com casos de R$ 0, R$ 10, R$ 50 (limite do teto) e R$ 300
 - Cálculo de total com cupom
 - Geração e verificação do token do QR code
 
@@ -510,7 +510,8 @@ O navegador do comprador acessa a página do evento em Next.js. O checkout chama
 - **Estoque:** reservar com `UPDATE ... WHERE sold + qty <= quantity` dentro de uma transação, nunca em duas etapas.
 - **Idempotência:** webhooks e criação de cobrança usam chave idempotente.
 - **Tokens do QR:** HMAC assinado, sem dados pessoais no QR.
-- **Taxa:** calcular no servidor, nunca confiar em valor enviado pelo cliente.
+- **Taxa:** `fee_cents = min(round(price_cents * 0.05), 250)` por ingresso, calculada no servidor e guardada no pedido; nunca confiar em valor enviado pelo cliente. Manter percentual e teto em configuração, porque podem mudar após a validação (ver `ticketing-plan/pricing-strategy.md`).
+- **Juros de parcelamento do cartão:** repassados ao comprador em linha separada da taxa de serviço.
 - **Datas:** salvar em UTC e exibir no fuso de Fortaleza ou Recife.
 - **LGPD:** CPF criptografado e rota de exclusão de dados.
 

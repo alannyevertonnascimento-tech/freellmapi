@@ -19,7 +19,7 @@
 
 ## 2. Estratégias de alavancagem
 
-**1. Taxa fixa e transparente.** A Sympla foi multada em R$ 210.765,02 pelo Procon-MG por reter a taxa em cancelamentos no prazo de arrependimento ([Diário do Comércio](https://diariodocomercio.com.br/legislacao/procon-sympla-taxa-de-conveniencia/)). Ações: valor fixo por ingresso, taxa devolvida em qualquer reembolso, preço final único no checkout.
+**1. Taxa fixa e transparente.** A Sympla foi multada em R$ 210.765,02 pelo Procon-MG por reter a taxa em cancelamentos no prazo de arrependimento ([Diário do Comércio](https://diariodocomercio.com.br/legislacao/procon-sympla-taxa-de-conveniencia/)). Ações: taxa de 5% com teto de R$ 2,50 por ingresso, devolvida em qualquer reembolso, preço final único no checkout.
 
 **2. Repasse rápido e previsível.** "Repasse e carteira" é tema frequente de reclamação ([Reclame Aqui](https://www.reclameaqui.com.br/empresa/sympla/)). Ações: repasse em D+2 após o evento, validação da conta bancária no cadastro, painel financeiro em tempo real.
 
