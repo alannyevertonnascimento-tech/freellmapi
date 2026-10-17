@@ -1,53 +1,52 @@
 # Pricing Strategy para Ingresso Campus (nome provisório)
 
-**Decisão do fundador (16/10/2026):** taxa de **5% por ingresso, com teto de R$ 2,50 por ingresso**, em vez dos 10% da Sympla. Este documento substitui a versão anterior (taxa fixa por faixa de preço).
+**Decisão (16/10/2026):** taxa de **5% + R$ 1,00 por ingresso pago, sem teto**, paga pelo comprador. Esta versão substitui as anteriores (faixas fixas e depois 5% com teto de R$ 2,50). A regra de 5% com teto foi descartada porque a margem ficava negativa em ingressos baratos e em ingressos caros pagos no cartão.
 
 ## Regra da taxa
 
 ```
-taxa_por_ingresso = min(5% × preço_do_ingresso, R$ 2,50)
+taxa_por_ingresso = 5% × preço_do_ingresso + R$ 1,00      (ingresso gratuito: R$ 0)
 ```
 
-| Preço do ingresso | Taxa | Taxa efetiva |
-|---|---|---|
-| R$ 10 | R$ 0,50 | 5,0% |
-| R$ 20 | R$ 1,00 | 5,0% |
-| R$ 30 | R$ 1,50 | 5,0% |
-| R$ 50 | R$ 2,50 | 5,0% (ponto onde o teto começa) |
-| R$ 80 | R$ 2,50 | 3,1% |
-| R$ 150 | R$ 2,50 | 1,7% |
-| R$ 300 | R$ 2,50 | 0,8% |
-| Gratuito | R$ 0 | — |
+| Ingresso | Sympla (10%, mín. R$ 2,50) | **Sua taxa** | Você cobra |
+|---|---|---|---|
+| R$ 10 | R$ 2,50 | **R$ 1,50** | 40% menos |
+| R$ 20 | R$ 2,50 | **R$ 2,00** | 20% menos |
+| R$ 30 | R$ 3,00 | **R$ 2,50** | 17% menos |
+| R$ 50 | R$ 5,00 | **R$ 3,50** | 30% menos |
+| R$ 100 | R$ 10,00 | **R$ 6,00** | 40% menos |
+| R$ 200 | R$ 20,00 | **R$ 11,00** | 45% menos |
 
-- **Quem paga:** o comprador, de forma visível no checkout (preço do ingresso + taxa de serviço = total). O organizador pode optar por absorver a taxa.
-- **Comparação:** a Sympla cobra 10% com mínimo de R$ 2,50 por ingresso (página de terceiros, conferir no site oficial: [Qual a taxa do Sympla?](https://vocepergunta.com/library/artigo/read/425154-qual-a-taxa-do-sympla)). Observação: o "R$ 2,50" da Sympla é o **mínimo**. No seu modelo, R$ 2,50 é o **máximo**, o que é uma proposta bem mais agressiva.
+- **Fonte da taxa da Sympla:** [Qual a taxa do Sympla?](https://vocepergunta.com/library/artigo/read/425154-qual-a-taxa-do-sympla), página de terceiros. Confira a tabela oficial antes de usar a comparação em material de venda.
+- **Quem paga:** o comprador, de forma visível no checkout. O organizador pode optar por absorver a taxa.
 - **Reembolso:** a taxa é devolvida integralmente em qualquer reembolso (a Sympla foi multada pelo Procon-MG por reter a taxa em cancelamentos).
+- **Mensagem honesta:** "20% a 45% menos que as grandes plataformas". Evite "metade" e "5%", porque a taxa efetiva só chega perto de 5% em ingressos caros.
 
-## Alerta de viabilidade
+## Por que essa regra nunca fica negativa
 
-A taxa de 5% com teto de R$ 2,50 funciona bem em ingressos baratos pagos por Pix, mas **dá prejuízo em ingressos caros pagos no cartão**.
+A margem de uma venda é `taxa − impostos − custo do gateway`. Com taxa `a × P + b` e gateway `c × P`, a margem é `(a − c) × P + b`, **positiva para qualquer preço desde que a > c**. Aqui `a = 5%` e o cartão à vista custa entre ~2,7% e ~4,2% nas fontes que encontrei, então sobra margem em qualquer preço. O valor fixo `b = R$ 1,00` protege os ingressos baratos.
 
-**Custos do gateway não confirmados:** não consegui a tabela oficial de Pagar.me nem de Asaas. Como referência, a tabela do PagBank de julho de 2026 mostra Pix grátis, crédito à vista a partir de 2,92% e crédito em 12x a partir de 12,36% ([calculadoradetaxas.com.br](https://www.calculadoradetaxas.com.br/pagseguro/taxas)), e variam conforme faturamento e prazo. Os números abaixo usam **3% no cartão à vista e 1% no Pix**, como hipótese. Substitua pelo contrato real.
+Margem por ingresso com impostos de 7% sobre a taxa (hipótese) e cartão à vista em três cenários de custo:
 
-| Ingresso | Taxa | Gateway Pix (1%) | Sobra no Pix | Gateway cartão (3%) | Sobra no cartão |
-|---|---|---|---|---|---|
-| R$ 20 | R$ 1,00 | R$ 0,20 | **R$ 0,80** | R$ 0,60 | **R$ 0,40** |
-| R$ 50 | R$ 2,50 | R$ 0,50 | **R$ 2,00** | R$ 1,50 | **R$ 1,00** |
-| R$ 100 | R$ 2,50 | R$ 1,00 | **R$ 1,50** | R$ 3,00 | **-R$ 0,50** |
-| R$ 200 | R$ 2,50 | R$ 2,00 | **R$ 0,50** | R$ 6,00 | **-R$ 3,50** |
+| Ingresso | Cartão 2,8% | Cartão 3,2% | Cartão 4,2% (pior caso) |
+|---|---|---|---|
+| R$ 20 | R$ 1,30 | R$ 1,22 | R$ 1,02 |
+| R$ 50 | R$ 1,86 | R$ 1,66 | R$ 1,16 |
+| R$ 100 | R$ 2,78 | R$ 2,38 | R$ 1,38 |
+| R$ 200 | R$ 4,63 | R$ 3,83 | R$ 1,83 |
 
-Um único estorno de cartão (o valor integral do ingresso mais a tarifa do gateway) apaga a margem de dezenas de vendas.
+No Pix a margem é maior (custo de 0% a ~1%). Os custos do gateway vêm de agregadores e blogs, não de tabelas oficiais (ver `gateway-comparison.md`). Não incluí custo fixo por transação, porque as fontes não informam.
 
-### Como proteger a margem mantendo "5%, máximo R$ 2,50"
+**Regra para recalibrar:** com o contrato real, mantenha o percentual da taxa **pelo menos 1,5 ponto acima do custo do cartão** e o valor fixo **pelo menos R$ 0,50 acima do custo fixo do gateway**.
 
-1. **Parcelamento e juros do cartão por conta do comprador.** Os juros de parcelamento são repassados ao comprador, separados da taxa de serviço. O PagBank, por exemplo, lista 12,36% para crédito em 12x, o que consumiria toda a receita.
-2. **Incentivar o Pix:** destacar o Pix como opção principal e oferecer o cartão só em ingressos até um valor-limite (por exemplo, R$ 150).
-3. **Piso para ingressos muito baratos:** sugiro um mínimo de R$ 1,00 por ingresso pago. A taxa de R$ 0,50 num ingresso de R$ 10 não cobre o custo fixo de gateway, e isso contraria a regra pura de 5%, então é uma decisão sua.
-4. **Receitas extras (fora da taxa de 5%):** antecipação de repasse (2% a 3% sobre o valor antecipado), assinatura dos planos abaixo e patrocínio na vitrine.
+## Perdas que a fórmula não cobre
+
+1. **Reembolso:** a taxa é devolvida, mas o gateway pode não devolver o custo dele. Mantenha uma reserva de 2% a 3% da receita de taxas.
+2. **Chargeback de cartão:** você pode perder o valor do ingresso mais a tarifa. Use antifraude, retenha o repasse até o evento e limite o cartão em ingressos caros.
+3. **Juros de parcelamento:** repasse ao comprador em linha separada. O parcelamento em 12x custa de ~9% a ~23% nas fontes, o que consumiria toda a sua receita.
+4. **Impostos:** a conta usa 7% sobre a taxa como hipótese. Confirme com um contador, inclusive o tratamento do dinheiro de terceiros no split.
 
 ## Planos do organizador (sem desconto na taxa)
-
-Como o teto já deixa pouca margem, os planos **não reduzem a taxa por ingresso**. Eles vendem recursos.
 
 | Plano | Preço | Para quem | Inclui |
 |---|---|---|---|
@@ -55,38 +54,34 @@ Como o teto já deixa pouca margem, os planos **não reduzem a taxa por ingresso
 | Pro (herói) | R$ 47/mês ou R$ 449/ano (cerca de 20% off) | Empresas juniores e entidades com eventos o ano todo | Tudo do Essencial, certificados automáticos, cupons por turma, repasse em D+2, marca na página, suporte prioritário por WhatsApp |
 | Congresso | R$ 197/mês ou R$ 1.890/ano (cerca de 20% off) | Congressos e semanas científicas com várias trilhas | Tudo do Pro, submissão de trabalhos, várias trilhas, repasse antecipado parcial, API e exportação, onboarding assistido |
 
-- **Justificativa dos preços:** R$ 47 e R$ 197 cobrem o custo de suporte e certificados e dão receita previsível independente do volume de vendas. O plano do meio é o herói, e o Congresso funciona como âncora.
-- **Gatilhos de upgrade:** segundo evento no semestre, necessidade de certificado, pedido de repasse mais rápido e submissão de trabalhos.
+Os planos vendem recursos e não reduzem a taxa. O plano do meio é o herói, e o Congresso funciona como âncora. Gatilhos de upgrade: segundo evento no semestre, necessidade de certificado, pedido de repasse mais rápido e submissão de trabalhos.
 
 ## Unidade econômica e ponto de equilíbrio (hipótese)
 
-Ingresso médio de R$ 40, 70% das vendas por Pix e 30% por cartão à vista:
-- taxa média: R$ 2,00 por ingresso
-- custo médio de gateway: 0,7 × R$ 0,40 + 0,3 × R$ 1,20 = R$ 0,64
-- **margem média: ~R$ 1,36 por ingresso (cerca de 3,4% do valor vendido)**
+Ingresso médio de R$ 40, 70% das vendas por Pix (custo ~1%) e 30% por cartão à vista (custo ~3,2%), impostos de 7% sobre a taxa:
+- taxa média: R$ 3,00 (a Sympla cobraria R$ 4,00, ou seja, 25% menos)
+- margem média: R$ 3,00 − R$ 0,21 de imposto − (0,7 × R$ 0,40 + 0,3 × R$ 1,28) = **~R$ 2,13 por ingresso**
 
 | Custo fixo anual | Ingressos para empatar | Valor vendido (GMV) |
 |---|---|---|
-| R$ 60 mil (só infraestrutura e ferramentas, sem salário) | ~44 mil | ~R$ 1,8 milhão |
-| R$ 180 mil | ~132 mil | ~R$ 5,3 milhões |
-| R$ 300 mil | ~220 mil | ~R$ 8,8 milhões |
+| R$ 60 mil (só infraestrutura e ferramentas, sem salário) | ~28 mil | ~R$ 1,1 milhão |
+| R$ 180 mil | ~85 mil | ~R$ 3,4 milhões |
+| R$ 300 mil | ~141 mil | ~R$ 5,6 milhões |
 
-Isso é **cerca de 2,5 vezes mais volume** que no modelo anterior (taxa fixa por faixa), porque a taxa por ingresso é bem menor. Os planos pagos ajudam: 50 assinantes Pro rendem ~R$ 28 mil por ano.
-
-| Cenário (hipótese) | Ingressos/ano | Margem após gateway | Custo fixo | Resultado |
+| Cenário (hipótese) | Ingressos/ano | Margem total | Custo fixo | Resultado |
 |---|---|---|---|---|
-| Ano 1 (validação) | ~15 mil (R$ 600 mil) | ~R$ 20 mil | R$ 60–120 mil | prejuízo |
-| Ano 2 | ~125 mil (R$ 5 milhões) | ~R$ 170 mil | R$ 150–250 mil | perto do zero |
-| Ano 3 | ~500 mil (R$ 20 milhões) | ~R$ 680 mil | R$ 400–600 mil | lucro modesto |
+| Ano 1 (validação) | ~15 mil | ~R$ 32 mil | R$ 60–120 mil | prejuízo |
+| Ano 2 | ~100 mil | ~R$ 213 mil | R$ 150–250 mil | perto do zero |
+| Ano 3 | ~400 mil | ~R$ 852 mil | R$ 400–600 mil | lucro de R$ 250–450 mil |
 
-Se o ticket médio subir para R$ 100 ou mais, a margem por ingresso **cai**, porque o teto de R$ 2,50 limita a receita enquanto o gateway cobra percentual.
+Se o ticket médio subir, a margem por ingresso também sobe. Planos pagos somam receita à parte: 50 assinantes Pro rendem ~R$ 28 mil por ano.
 
 ## Posicionamento e psicologia
 
-- **Mensagem:** "Metade da taxa das outras plataformas, no máximo R$ 2,50 por ingresso" e "Sem taxa escondida".
-- **Cuidado de comunicação:** na Sympla os 10% já incluem o processador. Deixe claro o que a sua taxa cobre (gateway incluído ou não) para não ser acusado de taxa oculta.
-- **Táticas:** teto como âncora (ingresso caro quase não paga mais), preço final visível desde o início, plano do meio como herói.
+- **Mensagem:** "Taxa transparente, bem menor que as grandes plataformas, e você recebe rápido." Mostre sempre o preço final (ingresso + taxa).
+- **Cuidado:** na Sympla os 10% já incluem o processador. Deixe claro o que a sua taxa cobre, para não ser acusado de taxa oculta.
+- **Táticas:** simulador de taxa na página do organizador (quanto ele recebe e quanto o comprador paga), plano do meio como herói, desconto anual de cerca de 20%.
 
 ## Maior risco de preço
 
-**Margem muito fina com cartão e estorno.** Com ~R$ 1,36 de margem média e teto de R$ 2,50, qualquer estorno, ingresso caro no cartão ou parcelamento mal repassado vira prejuízo. Mitigação: negociar tarifas do gateway antes do lançamento, priorizar Pix, repassar juros de parcelamento ao comprador, usar antifraude, reter o repasse até o evento e acompanhar semanalmente a margem real por ingresso.
+**Margem sensível ao custo real do gateway.** Se o contrato vier com tarifa fixa por transação ou cartão acima de ~4,5%, a margem dos ingressos baratos some. Mitigação: conseguir a proposta oficial antes do lançamento, priorizar Pix, repassar juros de parcelamento ao comprador, usar antifraude, reter o repasse até o evento e acompanhar semanalmente a margem real por ingresso.

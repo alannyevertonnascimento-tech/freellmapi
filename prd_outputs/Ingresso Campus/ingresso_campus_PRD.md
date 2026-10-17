@@ -5,7 +5,7 @@
 **Author:** PRD Generator
 **Status:** Draft
 
-> "Ingresso Campus" é um nome provisório. Premissas assumidas: web app em Next.js + PostgreSQL, pagamentos via Pagar.me (Pix e cartão) com split, MVP construído por uma pessoa com ajuda de IA, mercado inicial em uma capital do Nordeste.
+> "Ingresso Campus" é um nome provisório. Premissas assumidas: web app em Next.js + PostgreSQL, pagamentos via Mercado Pago no MVP (Pix e cartão, com split e `application_fee`) e migração futura para Pagar.me, atrás de uma interface `PaymentProvider` (ver `ticketing-plan/gateway-comparison.md`), MVP construído por uma pessoa com ajuda de IA, mercado inicial em uma capital do Nordeste.
 
 ## Executive Summary
 
@@ -101,7 +101,7 @@ Ingresso Campus é uma plataforma de venda de ingressos e inscrições para even
 - [ ] Reserva do estoque por 15 minutos durante o pagamento
 - [ ] Pagamento confirmado por webhook em até 30 s
 **Priority:** P0
-**Dependencies:** FR-003, integração Pagar.me
+**Dependencies:** FR-003, integração com o gateway (Mercado Pago)
 
 #### FR-005: Emissão de ingresso com QR code
 **Description:** após a confirmação do pagamento, o comprador recebe o ingresso com QR code único.
@@ -196,8 +196,8 @@ Ingresso Campus é uma plataforma de venda de ingressos e inscrições para even
 **Description:** planos Essencial, Pro e Congresso com taxas e recursos diferentes.
 **User story:** As an organizador recorrente, I want to subscribe so that I pay less per ticket.
 **Acceptance criteria:**
-- [ ] Taxa por ingresso = min(5% do preço, R$ 2,50), igual em todos os planos (arredondada para centavos)
-- [ ] Assinatura mensal ou anual via Pagar.me ou Stripe
+- [ ] Taxa por ingresso pago = 5% do preço + R$ 1,00, sem teto, igual em todos os planos (arredondada para centavos)
+- [ ] Assinatura mensal ou anual via gateway ou Stripe
 **Priority:** P2
 **Dependencies:** FR-008
 
@@ -237,7 +237,7 @@ Aplicação web monolítica em Next.js com API Routes, banco PostgreSQL e uma fi
 - **Key libraries:** Prisma, Zod, Auth.js, React Hook Form, `qrcode`, `@react-pdf/renderer`, BullMQ com Redis (ou pg-boss), Resend para e-mail
 
 #### Architecture Diagram (Description)
-O navegador do comprador acessa a página do evento em Next.js. O checkout chama a API, que reserva o estoque no PostgreSQL dentro de uma transação e cria a cobrança no Pagar.me (Pix ou cartão) com split para o organizador. O Pagar.me envia webhook de confirmação para a API, que marca o pedido como pago, gera os ingressos e enfileira o e-mail com o QR code. O app de check-in (PWA) consulta a API para validar tokens e marca o ingresso como usado.
+O navegador do comprador acessa a página do evento em Next.js. O checkout chama a API, que reserva o estoque no PostgreSQL dentro de uma transação e cria a cobrança no gateway (Mercado Pago no MVP; Pix ou cartão) com split para o organizador e a taxa da plataforma em `application_fee`. O gateway envia webhook de confirmação para a API, que marca o pedido como pago, gera os ingressos e enfileira o e-mail com o QR code. O app de check-in (PWA) consulta a API para validar tokens e marca o ingresso como usado.
 
 ## API Specifications
 
@@ -273,7 +273,7 @@ O navegador do comprador acessa a página do evento em Next.js. O checkout chama
 - 409: estoque insuficiente
 - 422: cupom inválido ou expirado
 
-#### POST /api/webhooks/pagarme
+#### POST /api/webhooks/payments
 
 **Purpose:** recebe a confirmação de pagamento.
 **Authentication:** assinatura HMAC do gateway
@@ -404,7 +404,7 @@ O navegador do comprador acessa a página do evento em Next.js. O checkout chama
 | buyer_cpf | string (criptografado) | Yes | CPF |
 | subtotal_cents / fee_cents / total_cents | int | Yes | Valores |
 | status | enum(pending, paid, expired, refunded) | Yes | Estado |
-| gateway_id | string | No | ID no Pagar.me |
+| gateway_id | string | No | ID do pagamento no gateway |
 | expires_at | timestamp | Yes | Fim da reserva |
 
 #### Ticket
@@ -423,7 +423,9 @@ O navegador do comprador acessa a página do evento em Next.js. O checkout chama
 
 ## Integration Points
 
-#### Pagar.me
+#### Gateway de pagamento (Mercado Pago no MVP; Pagar.me depois)
+
+**Conexão do organizador:** no cadastro, o organizador conecta a conta Mercado Pago por OAuth (o split 1:1 só funciona entre contas Mercado Pago). Sem conta conectada, o evento não pode ser publicado.
 **Purpose:** cobrança Pix e cartão com split
 **Integration type:** REST API e webhook
 **Data exchanged:**
@@ -458,7 +460,7 @@ O navegador do comprador acessa a página do evento em Next.js. O checkout chama
 ## Testing Requirements
 
 #### Unit Tests
-- Cálculo de taxa: min(5% do preço, R$ 2,50), com casos de R$ 0, R$ 10, R$ 50 (limite do teto) e R$ 300
+- Cálculo de taxa: 5% do preço + R$ 1,00, com casos de R$ 0 (gratuito, taxa zero), R$ 10 (R$ 1,50), R$ 50 (R$ 3,50) e R$ 300 (R$ 16,00)
 - Cálculo de total com cupom
 - Geração e verificação do token do QR code
 
@@ -479,7 +481,7 @@ O navegador do comprador acessa a página do evento em Next.js. O checkout chama
 2. Autenticação e cadastro de organizador
 3. CRUD de evento e lotes
 4. Página pública do evento
-5. Checkout com reserva de estoque e integração Pagar.me (sandbox)
+5. Checkout com reserva de estoque e integração com o gateway (Mercado Pago, sandbox) atrás de uma interface `PaymentProvider`
 6. Webhook, emissão de ingresso e e-mail
 7. Painel do organizador
 8. PWA de check-in
@@ -510,7 +512,7 @@ O navegador do comprador acessa a página do evento em Next.js. O checkout chama
 - **Estoque:** reservar com `UPDATE ... WHERE sold + qty <= quantity` dentro de uma transação, nunca em duas etapas.
 - **Idempotência:** webhooks e criação de cobrança usam chave idempotente.
 - **Tokens do QR:** HMAC assinado, sem dados pessoais no QR.
-- **Taxa:** `fee_cents = min(round(price_cents * 0.05), 250)` por ingresso, calculada no servidor e guardada no pedido; nunca confiar em valor enviado pelo cliente. Manter percentual e teto em configuração, porque podem mudar após a validação (ver `ticketing-plan/pricing-strategy.md`).
+- **Taxa:** `fee_cents = price_cents > 0 ? round(price_cents * 0.05) + 100 : 0` por ingresso, calculada no servidor e guardada no pedido; nunca confiar em valor enviado pelo cliente. Manter percentual e valor fixo em configuração, porque devem ser recalibrados com o contrato real do gateway (ver `ticketing-plan/pricing-strategy.md`).
 - **Juros de parcelamento do cartão:** repassados ao comprador em linha separada da taxa de serviço.
 - **Datas:** salvar em UTC e exibir no fuso de Fortaleza ou Recife.
 - **LGPD:** CPF criptografado e rota de exclusão de dados.
